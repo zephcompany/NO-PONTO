@@ -1,3 +1,4 @@
+import { assetPath } from "@/lib/asset-path";
 import { siteLinks } from "@/content/links";
 import copy from "@/content/copy.json";
 export default function Footer() {
@@ -7,7 +8,7 @@ export default function Footer() {
         <div className="footer-top">
           <a href="#inicio" aria-label="NoPonto — início">
             <img
-              src="/brand/logo-light.png"
+              src={assetPath("/brand/logo-light.png")}
               width="757"
               height="130"
               alt="noponto."

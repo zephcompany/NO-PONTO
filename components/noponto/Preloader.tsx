@@ -1,3 +1,4 @@
+import { assetPath } from "@/lib/asset-path";
 /** The four original paths are taken directly from the official Vector.svg. */
 export default function Preloader() {
   return (
@@ -22,7 +23,7 @@ export default function Preloader() {
           </svg>
           <img
             className="intro-mark-guide"
-            src="/brand/mark.svg"
+            src={assetPath("/brand/mark.svg")}
             width="313"
             height="320"
             alt=""

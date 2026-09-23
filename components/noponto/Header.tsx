@@ -1,4 +1,5 @@
 "use client";
+import { assetPath } from "@/lib/asset-path";
 import { useState, useEffect, useRef } from "react";
 import { Arrow } from "./ui";
 const links = [
@@ -77,7 +78,7 @@ export default function Header() {
           onClick={() => setOpen(false)}
         >
           <img
-            src="/brand/logo-light.png"
+            src={assetPath("/brand/logo-light.png")}
             width="757"
             height="130"
             alt="NoPonto"

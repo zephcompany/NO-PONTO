@@ -1,3 +1,4 @@
+import { assetPath } from "@/lib/asset-path";
 import type { ReactNode } from "react";
 import { ArrowRight, ArrowUpRight, Crosshair } from "lucide-react";
 export function Arrow({ diagonal = false }: { diagonal?: boolean }) {
@@ -53,7 +54,7 @@ export function Mark({ className = "" }: { className?: string }) {
   return (
     <img
       className={`brand-mark ${className}`}
-      src="/brand/mark.svg"
+      src={assetPath("/brand/mark.svg")}
       width="313"
       height="319"
       alt=""

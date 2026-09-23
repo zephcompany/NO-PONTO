@@ -130,7 +130,7 @@ export default function FoodMotion({ rootRef }: { rootRef: RefObject<HTMLDivElem
 
           if (desktop) {
             // Local pointer lighting, no ambient glows or global pointer listener.
-            root.querySelectorAll<HTMLElement>(".fd-feature, .fd-routine-item, .fd-console").forEach(card => {
+            root.querySelectorAll<HTMLElement>(".fd-feature, .fd-console").forEach(card => {
               let bounds: DOMRect | null = null;
               let scrollAtEnter = 0;
               let frame = 0;

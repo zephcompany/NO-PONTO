@@ -1,3 +1,4 @@
+import { assetPath } from "@/lib/asset-path";
 import type { Metadata } from "next";
 import "./globals.css";
 import "./experience.css";
@@ -19,7 +20,7 @@ export const metadata: Metadata = {
   title: "NoPonto — Gestão · Dados · Tecnologia",
   description:
     "A NoPonto entra na operação, identifica onde existe perda, retrabalho ou falta de controle e constrói a solução necessária, de processos e indicadores a automações, sistemas e IA.",
-  icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
+  icons: { icon: assetPath("/favicon.svg"), shortcut: assetPath("/favicon.svg") },
 };
 export default function RootLayout({
   children,
@@ -29,6 +30,8 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" suppressHydrationWarning>
       <head>
+        <link rel="preload" href={assetPath("/fonts/instrument-sans.ttf")} as="font" type="font/ttf" crossOrigin="anonymous" />
+        <style>{`@font-face{font-family:"Instrument Sans";src:url("${assetPath("/fonts/instrument-sans.ttf")}") format("truetype");font-weight:400 700;font-display:swap;}`}</style>
         <script dangerouslySetInnerHTML={{ __html: introBootstrap }} />
       </head>
       <body>

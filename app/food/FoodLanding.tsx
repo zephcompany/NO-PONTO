@@ -7,17 +7,12 @@ import { assetPath } from "@/lib/asset-path";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
+import { FoodButton, FoodTag } from "./FoodUI";
+import { KitchenHero, RoutineSection, RecipeJourney, FormatsSection, FoodFAQ } from "./FoodSections";
 
 const home = assetPath("/");
 const modules = ["Fichas técnicas", "CMV", "DRE"];
 const capabilities = ["Financeiro", "CMV", "DRE", "Fichas técnicas", "Estoque", "Multiunidade", "Indicadores", "Integrações"];
-
-function FoodButton({ children, href, light = false }: { children: React.ReactNode; href: string; light?: boolean }) {
-  return <a className={`fd-button ${light ? "fd-button-light" : ""}`} href={href}><span>{children}</span><i aria-hidden="true"><ArrowUpRight /></i></a>;
-}
-function FoodTag({ children }: { children: React.ReactNode }) {
-  return <div className="fd-tag"><span aria-hidden="true" />{children}</div>;
-}
 
 function ProductCanvas() {
   const [active, setActive] = useState("0");
@@ -98,6 +93,8 @@ export default function FoodLanding() {
     media.add("(prefers-reduced-motion: no-preference)", () => {
       const context = gsap.context(() => {
         gsap.from(".fd-hero-copy > *", { y: 22, opacity: 0, duration: 0.9, stagger: 0.1, ease: "power3.out", clearProps: "all" });
+        gsap.from(".fd-prep-ticket", { y: 25, opacity: 0, duration: 1, delay: 0.25, ease: "power3.out", clearProps: "opacity,transform" });
+        gsap.from(".fd-ticket-links > span", { y: 5, opacity: 0, duration: 0.55, stagger: 0.14, scrollTrigger: { trigger: ".fd-prep-ticket", start: "top 85%", toggleActions: "play none none reverse" } });
         gsap.utils.toArray<HTMLElement>(".fd-reveal").forEach(element => {
           gsap.from(element, { y: 32, opacity: 0, duration: 0.8, ease: "power3.out", scrollTrigger: { trigger: element, start: "top 90%", toggleActions: "play none none reverse" } });
         });
@@ -125,12 +122,12 @@ export default function FoodLanding() {
     <header className={`fd-header ${scrolled ? "is-scrolled" : ""} ${menuOpen ? "is-open" : ""}`}>
       <div className="fd-wrap fd-header-inner">
         <a href="#food-inicio" aria-label="NoPonto Food — início" className="fd-logo" onClick={() => setMenuOpen(false)}><img src={assetPath("/food/logo-light.webp")} width="640" height="314" alt="NoPonto Food Service" /></a>
-        <nav className="fd-desktop-nav" aria-label="Navegação principal"><a href="#produto">O produto</a><a href="#operacao">A operação</a><a href={home}>NoPonto <ArrowUpRight /></a></nav>
+        <nav className="fd-desktop-nav" aria-label="Navegação principal"><a href="#produto">O produto</a><a href="#para-quem">Para quem</a><a href="#operacao">O método</a><a href="#food-faq">FAQ</a><a href={home}>NoPonto <ArrowUpRight /></a></nav>
         <a className="fd-header-contact" href={`${home}#conversa`}>Analisar minha operação <ArrowUpRight /></a>
         <button ref={menuButton} className="fd-menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-label={menuOpen ? "Fechar menu" : "Abrir menu"} aria-expanded={menuOpen} aria-controls="food-mobile-menu">{menuOpen ? <X /> : <Menu />}</button>
       </div>
       <nav id="food-mobile-menu" className="fd-mobile-nav" aria-label="Navegação móvel" inert={!menuOpen} aria-hidden={!menuOpen}>
-        <a href="#produto" onClick={() => setMenuOpen(false)}>O produto <ArrowRight /></a><a href="#operacao" onClick={() => setMenuOpen(false)}>A operação <ArrowRight /></a><a href={home}>NoPonto <ArrowUpRight /></a><a href={`${home}#conversa`}>Analisar minha operação <ArrowUpRight /></a>
+        <a href="#produto" onClick={() => setMenuOpen(false)}>O produto <ArrowRight /></a><a href="#para-quem" onClick={() => setMenuOpen(false)}>Para quem <ArrowRight /></a><a href="#operacao" onClick={() => setMenuOpen(false)}>O método <ArrowRight /></a><a href="#food-faq" onClick={() => setMenuOpen(false)}>FAQ <ArrowRight /></a><a href={home}>NoPonto <ArrowUpRight /></a><a href={`${home}#conversa`}>Analisar minha operação <ArrowUpRight /></a>
       </nav>
     </header>
     <main id="food-main">
@@ -143,11 +140,12 @@ export default function FoodLanding() {
             <FoodButton href="#produto" light>Conhecer o NoPonto Food</FoodButton>
             <span className="fd-hero-audience">Restaurantes · Bares · Delivery · Multiunidades</span>
           </div>
-          <div className="fd-hero-visual"><div className="fd-canvas-label"><span>OPERAÇÃO</span><span>GESTÃO</span></div><ProductCanvas /><div className="fd-visual-caption"><span>Da ficha técnica à DRE.</span><span>Uma visão do todo.</span></div></div>
+          <div className="fd-hero-visual"><KitchenHero /></div>
         </div>
         <div className="fd-hero-bottom fd-wrap"><span>Especializado na sua operação.</span><a href="#produto" aria-label="Explorar o produto"><ArrowRight /></a><span>Uma vertical NoPonto.</span></div>
       </section>
       <div className="fd-capability-band" aria-label="Áreas de gestão"><div className="fd-wrap">{capabilities.map(label => <span key={label}>{label}</span>)}</div></div>
+      <RoutineSection />
       <section className="fd-product fd-section" id="produto">
         <div className="fd-wrap">
           <div className="fd-section-heading fd-reveal"><div><FoodTag>DA OPERAÇÃO AO RESULTADO</FoodTag><h2>O que acontece na cozinha<br /><em>aparece na gestão.</em></h2></div><p>Compras, preparo, estoque e resultado fazem parte da mesma operação. A gestão precisa enxergar essas conexões.</p></div>
@@ -160,18 +158,22 @@ export default function FoodLanding() {
             </article>
             <article className="fd-feature fd-feature-kitchen fd-reveal">
               <div className="fd-feature-head"><span>02 / OPERAÇÃO</span><Utensils aria-hidden="true" /></div>
-              <div className="fd-kitchen-visual" aria-hidden="true"><div><FileText /><span>Ficha técnica</span><b>Insumos · Preparo · Rendimento</b></div><div><Package /><span>Estoque</span><b>Entradas · Consumo · Saídas</b></div></div>
+              <div className="fd-kitchen-visual" aria-hidden="true"><img src={assetPath("/food/ingredients.webp")} width="600" height="400" alt="" loading="lazy" /><div><FileText /><span>Ficha técnica</span><b>Insumos · Preparo · Rendimento</b></div></div>
               <h3>O controle começa<br /><em>no detalhe.</em></h3><p>Fichas técnicas e estoque aproximam o planejamento da rotina da operação.</p><div className="fd-feature-labels"><span>Fichas técnicas</span><span>Estoque</span></div>
             </article>
             <article className="fd-feature fd-feature-network fd-reveal"><div className="fd-network-copy"><div className="fd-feature-head"><span>03 / VISÃO DO TODO</span></div><h3>Cada unidade.<br /><em>O mesmo contexto.</em></h3><p>Multiunidade, indicadores e integrações para conectar as diferentes partes da gestão.</p><div className="fd-feature-labels"><span>Multiunidade</span><span>Indicadores</span><span>Integrações</span></div></div><div className="fd-network-visual" aria-hidden="true"><div className="fd-network-center"><Network /><span>Gestão</span></div><div className="fd-network-branches"><i /><i /><i /></div><div className="fd-network-stores">{[0,1,2].map(i=><span key={i}><Store /></span>)}</div></div></article>
           </div>
         </div>
       </section>
+      <RecipeJourney />
+      <section className="fd-management fd-section" id="gestao"><div className="fd-wrap fd-management-layout"><div className="fd-management-copy fd-reveal"><FoodTag>GESTÃO CONECTADA</FoodTag><h2>Não é só o que vende.<br /><em>É o que fica.</em></h2><p>Uma cozinha movimentada conta parte da história. CMV, despesas e resultado completam a leitura.</p><div className="fd-management-points"><div><span>01</span><p><strong>Ficha técnica</strong>A referência do que compõe cada preparo.</p></div><div><span>02</span><p><strong>CMV</strong>O custo da mercadoria no contexto da operação.</p></div><div><span>03</span><p><strong>DRE</strong>Receita, custos e despesas na leitura do resultado.</p></div></div></div><div className="fd-management-console fd-reveal"><ProductCanvas /><p>Explore as três visões da gestão.</p></div></div></section>
+      <FormatsSection />
       <section className="fd-operation fd-section" id="operacao"><div className="fd-wrap">
         <div className="fd-operation-heading fd-reveal"><FoodTag>EXPERIÊNCIA QUE VEM DA OPERAÇÃO</FoodTag><h2>A ferramenta muda.<br /><em>O método permanece.</em></h2><p>A experiência acumulada em operações de alimentação está sendo transformada em uma solução especializada para restaurantes.</p></div>
         <div className="fd-operation-flow"><div className="fd-operation-line" aria-hidden="true" />{[{name:"Entender",text:"A rotina, os processos e os pontos de perda."},{name:"Organizar",text:"As informações, as responsabilidades e os indicadores."},{name:"Conectar",text:"Operação e financeiro no mesmo contexto."}].map((step,i)=><div className="fd-operation-step" key={step.name}><span className="fd-step-number">0{i+1}</span><h3>{step.name}</h3><p>{step.text}</p></div>)}</div>
         <div className="fd-operation-foot"><span>QUANDO UM PROBLEMA SE REPETE,<br />O CONHECIMENTO VIRA PRODUTO.</span><a href={home}>Conheça a NoPonto <ArrowUpRight /></a></div>
       </div></section>
+      <FoodFAQ />
       <section className="fd-contact fd-section"><div className="fd-wrap fd-contact-inner"><div className="fd-reveal"><FoodTag>NOPONTO FOOD</FoodTag><h2>Primeiro, vamos<br /><em>entender sua operação.</em></h2><FoodButton href={`${home}#conversa`} light>Analisar minha operação</FoodButton></div><img className="fd-contact-logo" src={assetPath("/food/logo-light.webp")} width="640" height="314" alt="NoPonto Food Service" loading="lazy" /></div></section>
     </main>
     <footer className="fd-footer"><div className="fd-wrap"><span>NoPonto Food Service</span><a href={home}><ArrowLeft /> Voltar para a NoPonto</a></div></footer>

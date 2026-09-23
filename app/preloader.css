@@ -1,0 +1,180 @@
+.brand-preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  visibility: hidden;
+  pointer-events: none;
+  background: linear-gradient(155deg, #fff 0%, #f8f7fa 48%, #efedf3 100%);
+  contain: layout paint;
+}
+.brand-preloader-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translateY(-12px);
+}
+.brand-preloader-mark {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 180px;
+  height: 180px;
+}
+.intro-mark,
+.intro-mark-guide {
+  grid-area: 1 / 1;
+  width: 96px;
+  height: auto;
+  overflow: visible;
+}
+.intro-mark-guide {
+  opacity: 0.055;
+}
+.intro-orbit {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  stroke: #4e2bcd0c;
+  stroke-width: 0.65;
+  transform: rotate(-90deg);
+}
+.intro-orbit-draw {
+  stroke: #905bf43d;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+.intro-piece {
+  opacity: 0;
+}
+.intro-piece-0 {
+  --piece-x: 8px;
+  --piece-y: -8px;
+  --piece-delay: 0.24s;
+}
+.intro-piece-1 {
+  --piece-x: -8px;
+  --piece-y: -8px;
+  --piece-delay: 0.03s;
+}
+.intro-piece-2 {
+  --piece-x: -8px;
+  --piece-y: 8px;
+  --piece-delay: 0.1s;
+}
+.intro-piece-3 {
+  --piece-x: 8px;
+  --piece-y: 8px;
+  --piece-delay: 0.17s;
+}
+.brand-preloader-track {
+  width: 76px;
+  height: 2px;
+  margin-top: 30px;
+  border-radius: 2px;
+  overflow: hidden;
+  background: #4e2bcd0d;
+}
+.brand-preloader-track > i {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #905bf4, #4e2bcd);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+[data-noponto-intro] .brand-preloader {
+  visibility: visible;
+  pointer-events: auto;
+  animation: intro-curtain 1.35s cubic-bezier(0.76, 0, 0.24, 1) both;
+}
+[data-noponto-intro] .intro-piece {
+  animation: intro-piece-in 0.55s cubic-bezier(0.22, 1, 0.36, 1)
+    var(--piece-delay) both;
+}
+[data-noponto-intro] .intro-orbit-draw {
+  animation: intro-orbit-in 1.05s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+[data-noponto-intro] .brand-preloader-track > i {
+  animation: intro-progress 0.95s cubic-bezier(0.4, 0, 0.2, 1) 0.05s both;
+}
+[data-noponto-intro] .brand-preloader-center {
+  animation: intro-center-out 1.35s ease both;
+}
+@keyframes intro-piece-in {
+  from {
+    opacity: 0;
+    transform: translate(var(--piece-x), var(--piece-y));
+  }
+  to {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+}
+@keyframes intro-orbit-in {
+  from {
+    stroke-dashoffset: 1;
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+@keyframes intro-progress {
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes intro-center-out {
+  0%,
+  73% {
+    opacity: 1;
+    transform: translateY(-12px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-24px);
+  }
+}
+@keyframes intro-curtain {
+  0%,
+  74% {
+    clip-path: inset(0 0 0 0);
+    visibility: visible;
+  }
+  99.9% {
+    visibility: visible;
+  }
+  100% {
+    clip-path: inset(0 0 100% 0);
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+@media (max-width: 600px) {
+  .brand-preloader-mark {
+    width: 152px;
+    height: 152px;
+  }
+  .intro-mark,
+  .intro-mark-guide {
+    width: 82px;
+  }
+  .brand-preloader-track {
+    width: 64px;
+    margin-top: 24px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-noponto-intro] .brand-preloader {
+    display: none;
+  }
+}

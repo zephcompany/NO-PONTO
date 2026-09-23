@@ -11,8 +11,8 @@ import Preloader from "@/components/noponto/Preloader";
 const introBootstrap = `(() => {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   try {
-    if (sessionStorage.getItem('noponto-intro-v8')) return;
-    sessionStorage.setItem('noponto-intro-v8', '1');
+    if (sessionStorage.getItem('noponto-intro-v11')) return;
+    sessionStorage.setItem('noponto-intro-v11', '1');
   } catch (_) {}
   document.documentElement.setAttribute('data-noponto-intro', '');
 })();`;

@@ -1,4 +1,5 @@
 .brand-preloader {
+  --intro-duration: 3s;
   position: fixed;
   inset: 0;
   z-index: 1000;
@@ -16,67 +17,38 @@
   align-items: center;
   transform: translateY(-12px);
 }
-.brand-preloader-mark {
-  position: relative;
-  display: grid;
-  place-items: center;
-  width: 180px;
-  height: 180px;
-}
-.intro-mark,
-.intro-mark-guide {
-  grid-area: 1 / 1;
-  width: 96px;
+.intro-mark {
+  display: block;
+  width: 124px;
   height: auto;
   overflow: visible;
 }
-.intro-mark-guide {
-  opacity: 0.055;
+.intro-guides {
+  stroke: #4e2bcd;
+  stroke-width: 0.7;
+  opacity: 0.1;
 }
-.intro-orbit {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  stroke: #4e2bcd0c;
-  stroke-width: 0.65;
-  transform: rotate(-90deg);
+.intro-traces {
+  stroke-width: 1.65;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
-.intro-orbit-draw {
-  stroke: #905bf43d;
+.intro-trace {
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
 }
-.intro-piece {
-  opacity: 0;
-}
-.intro-piece-0 {
-  --piece-x: 8px;
-  --piece-y: -8px;
-  --piece-delay: 0.24s;
-}
-.intro-piece-1 {
-  --piece-x: -8px;
-  --piece-y: -8px;
-  --piece-delay: 0.03s;
-}
-.intro-piece-2 {
-  --piece-x: -8px;
-  --piece-y: 8px;
-  --piece-delay: 0.1s;
-}
-.intro-piece-3 {
-  --piece-x: 8px;
-  --piece-y: 8px;
-  --piece-delay: 0.17s;
-}
+.intro-fill { opacity: 0; }
+.intro-segment-0 { --trace-delay: 0.12s; --fill-delay: 1.62s; }
+.intro-segment-1 { --trace-delay: 0.28s; --fill-delay: 1.72s; }
+.intro-segment-2 { --trace-delay: 0.44s; --fill-delay: 1.82s; }
+.intro-segment-3 { --trace-delay: 0.60s; --fill-delay: 1.92s; }
 .brand-preloader-track {
-  width: 76px;
+  width: 92px;
   height: 2px;
-  margin-top: 30px;
+  margin-top: 40px;
   border-radius: 2px;
   overflow: hidden;
-  background: #4e2bcd0d;
+  background: #4e2bcd12;
 }
 .brand-preloader-track > i {
   display: block;
@@ -90,91 +62,53 @@
 [data-noponto-intro] .brand-preloader {
   visibility: visible;
   pointer-events: auto;
-  animation: intro-curtain 1.35s cubic-bezier(0.76, 0, 0.24, 1) both;
+  animation: intro-curtain var(--intro-duration) cubic-bezier(0.76, 0, 0.24, 1) both;
 }
-[data-noponto-intro] .intro-piece {
-  animation: intro-piece-in 0.55s cubic-bezier(0.22, 1, 0.36, 1)
-    var(--piece-delay) both;
+[data-noponto-intro] .intro-trace {
+  animation: intro-draw 1.45s cubic-bezier(0.45, 0, 0.2, 1) var(--trace-delay) both;
 }
-[data-noponto-intro] .intro-orbit-draw {
-  animation: intro-orbit-in 1.05s cubic-bezier(0.4, 0, 0.2, 1) both;
+[data-noponto-intro] .intro-fill {
+  animation: intro-fill-in 0.48s cubic-bezier(0.22, 1, 0.36, 1) var(--fill-delay) both;
+}
+[data-noponto-intro] .intro-traces {
+  animation: intro-outline-settle var(--intro-duration) ease both;
 }
 [data-noponto-intro] .brand-preloader-track > i {
-  animation: intro-progress 0.95s cubic-bezier(0.4, 0, 0.2, 1) 0.05s both;
+  animation: intro-progress 2.3s cubic-bezier(0.4, 0, 0.2, 1) 0.15s both;
 }
 [data-noponto-intro] .brand-preloader-center {
-  animation: intro-center-out 1.35s ease both;
+  animation: intro-center-out var(--intro-duration) ease both;
 }
-@keyframes intro-piece-in {
-  from {
-    opacity: 0;
-    transform: translate(var(--piece-x), var(--piece-y));
-  }
-  to {
-    opacity: 1;
-    transform: translate(0, 0);
-  }
+@keyframes intro-draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
 }
-@keyframes intro-orbit-in {
-  from {
-    stroke-dashoffset: 1;
-    opacity: 0;
-  }
-  25% {
-    opacity: 1;
-  }
-  to {
-    stroke-dashoffset: 0;
-    opacity: 1;
-  }
+@keyframes intro-fill-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes intro-outline-settle {
+  0%, 65% { opacity: 1; }
+  83%, 100% { opacity: 0; }
 }
 @keyframes intro-progress {
-  to {
-    transform: scaleX(1);
-  }
+  to { transform: scaleX(1); }
 }
 @keyframes intro-center-out {
-  0%,
-  73% {
-    opacity: 1;
-    transform: translateY(-12px);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-24px);
-  }
+  0% { opacity: 0; transform: translateY(-6px) scale(0.98); }
+  10%, 81% { opacity: 1; transform: translateY(-12px) scale(1); }
+  100% { opacity: 0; transform: translateY(-28px) scale(0.985); }
 }
 @keyframes intro-curtain {
-  0%,
-  74% {
-    clip-path: inset(0 0 0 0);
-    visibility: visible;
-  }
-  99.9% {
-    visibility: visible;
-  }
-  100% {
-    clip-path: inset(0 0 100% 0);
-    visibility: hidden;
-    pointer-events: none;
-  }
+  0%, 83% { clip-path: inset(0 0 0 0); visibility: visible; }
+  99.9% { visibility: visible; }
+  100% { clip-path: inset(0 0 100% 0); visibility: hidden; pointer-events: none; }
 }
 @media (max-width: 600px) {
-  .brand-preloader-mark {
-    width: 152px;
-    height: 152px;
-  }
-  .intro-mark,
-  .intro-mark-guide {
-    width: 82px;
-  }
-  .brand-preloader-track {
-    width: 64px;
-    margin-top: 24px;
-  }
+  .intro-mark { width: 104px; }
+  .brand-preloader-track { width: 78px; margin-top: 32px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  [data-noponto-intro] .brand-preloader {
-    display: none;
-  }
+  [data-noponto-intro] .brand-preloader { display: none; }
+  .brand-preloader * { animation: none !important; }
 }

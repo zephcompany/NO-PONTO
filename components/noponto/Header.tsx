@@ -6,7 +6,7 @@ const links = [
   ["Método", "#metodo"],
   ["Cases", "#cases"],
   ["Soluções", "#solucoes"],
-  ["NoPonto Food", "#food"],
+  ["NoPonto Food", assetPath("/food/")],
   ["FAQ", "#faq"],
 ];
 export default function Header() {

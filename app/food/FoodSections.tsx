@@ -49,10 +49,10 @@ export function RoutineSection() {
 }
 
 const recipeSteps = [
-  { title: "Tudo começa no ingrediente.", text: "O que entra na cozinha tem origem, unidade de medida e custo. Organizar essa base é o primeiro passo para entender o prato.", label: "Insumos", icon: ShoppingBasket, details: ["Cadastro", "Unidade de medida", "Custo de compra"], conclusion: "Uma base organizada." },
-  { title: "O preparo ganha uma referência.", text: "Ingredientes, quantidades, rendimento e porção na mesma ficha. O conhecimento da cozinha se transforma em informação para a gestão.", label: "Ficha técnica", icon: ClipboardList, details: ["Ingredientes", "Rendimento", "Porção"], conclusion: "Um padrão para cada preparo." },
-  { title: "O consumo conversa com o estoque.", text: "Entradas, saídas e perdas precisam ser lidas junto do que acontece no preparo. É assim que o estoque deixa de ser uma informação isolada.", label: "Estoque", icon: Package, details: ["Entradas", "Consumo", "Perdas"], conclusion: "A movimentação no contexto." },
-  { title: "O custo encontra o resultado.", text: "CMV e DRE aproximam o detalhe da operação da visão financeira. Para entender o resultado, é preciso conhecer o caminho do número.", label: "CMV + DRE", icon: ReceiptText, details: ["CMV", "Receita", "Resultado"], conclusion: "Do ingrediente à decisão." },
+  { title: "Tudo começa no ingrediente.", text: "O que entra na cozinha tem origem, unidade de medida e custo. Organizar essa base é o primeiro passo para entender o prato.", label: "Insumos", icon: ShoppingBasket, details: ["Cadastro", "Unidade de medida", "Custo de compra"], conclusion: "Uma base organizada.", image: "ingredients.webp", alt: "Hambúrguer em prato de cerâmica e ingredientes organizados em uma bancada de preparo." },
+  { title: "O preparo ganha uma referência.", text: "Ingredientes, quantidades, rendimento e porção na mesma ficha. O conhecimento da cozinha se transforma em informação para a gestão.", label: "Ficha técnica", icon: ClipboardList, details: ["Ingredientes", "Rendimento", "Porção"], conclusion: "Um padrão para cada preparo.", image: "recipe-prep.webp", alt: "Porcionamento de ingredientes com uma balança na bancada de uma cozinha profissional." },
+  { title: "O consumo conversa com o estoque.", text: "Entradas, saídas e perdas precisam ser lidas junto do que acontece no preparo. É assim que o estoque deixa de ser uma informação isolada.", label: "Estoque", icon: Package, details: ["Entradas", "Consumo", "Perdas"], conclusion: "A movimentação no contexto.", image: "inventory.webp", alt: "Conferência de alimentos em recipientes organizados nas prateleiras de um restaurante." },
+  { title: "O custo encontra o resultado.", text: "CMV e DRE aproximam o detalhe da operação da visão financeira. Para entender o resultado, é preciso conhecer o caminho do número.", label: "CMV + DRE", icon: ReceiptText, details: ["CMV", "Receita", "Resultado"], conclusion: "Do ingrediente à decisão.", image: "financial-close.webp", alt: "Conferência de comprovantes e cálculos no fechamento financeiro de um restaurante." },
 ];
 
 export function RecipeJourney() {
@@ -60,12 +60,14 @@ export function RecipeJourney() {
   const [active, setActive] = useState(0);
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
-    const context = gsap.context(() => {
+    const media = gsap.matchMedia();
+    media.add("(min-width: 701px)", () => {
+      setActive(0);
       gsap.utils.toArray<HTMLElement>(".fd-recipe-step").forEach((step, index) => {
         ScrollTrigger.create({ trigger: step, start: "top 64%", end: "bottom 64%", onEnter: () => setActive(index), onEnterBack: () => setActive(index) });
       });
     }, root);
-    return () => context.revert();
+    return () => media.revert();
   }, []);
   const current = recipeSteps[active];
   const CurrentIcon = current.icon;
@@ -75,7 +77,10 @@ export function RecipeJourney() {
         <div className="fd-section-heading fd-reveal"><div><FoodTag>DO INGREDIENTE AO RESULTADO</FoodTag><h2>Antes de chegar à mesa,<br /><em>já tem muita gestão.</em></h2></div><p>Acompanhe o caminho de um preparo e veja como as informações se conectam.</p></div>
         <div className="fd-recipe-layout">
           <div className="fd-recipe-sticky">
-            <div className="fd-recipe-photograph"><img src={assetPath("/food/ingredients.webp")} width="1200" height="800" alt="Hambúrguer em prato de cerâmica e ingredientes organizados em uma bancada de preparo." loading="lazy" /><span className="fd-recipe-photo-label"><Utensils /> DA COZINHA À GESTÃO</span></div>
+            <div className="fd-recipe-photograph">
+              <div className="fd-recipe-images">{recipeSteps.map((step, i) => <img key={step.image} className={`fd-recipe-image ${active === i ? "is-active" : ""}`} src={assetPath(`/food/${step.image}`)} width="1200" height={i === 0 ? 800 : 1200} alt={step.alt} aria-hidden={active !== i} loading="lazy" decoding="async" />)}</div>
+              <span className="fd-recipe-photo-label"><Utensils /> DA COZINHA À GESTÃO</span>
+            </div>
             <div className="fd-recipe-overlay" key={active}>
               <div className="fd-recipe-overlay-top"><span>0{active + 1} / 04</span><CurrentIcon /></div>
               <h3>{current.label}</h3><div className="fd-recipe-fields">{current.details.map(detail => <span key={detail}><Check />{detail}</span>)}</div>
@@ -83,7 +88,12 @@ export function RecipeJourney() {
             </div>
             <div className="fd-recipe-progress" aria-hidden="true">{recipeSteps.map((step, i) => <span className={active >= i ? "is-active" : ""} key={step.label} />)}</div>
           </div>
-          <div className="fd-recipe-steps">{recipeSteps.map((step, i) => <article key={step.title} className={`fd-recipe-step ${active === i ? "is-active" : ""}`}><span className="fd-recipe-step-index">0{i + 1}</span><div><span className="fd-recipe-step-tag">{step.label}</span><h3>{step.title}</h3><p>{step.text}</p></div></article>)}</div>
+          <div className="fd-recipe-steps">{recipeSteps.map((step, i) => <article key={step.title} className={`fd-recipe-step ${active === i ? "is-active" : ""}`}>
+            <div className="fd-recipe-mobile-visual"><img src={assetPath(`/food/${step.image}`)} width="1200" height={i === 0 ? 800 : 1200} alt={step.alt} loading="lazy" decoding="async" /></div>
+            <span className="fd-recipe-step-index">0{i + 1}</span><div><span className="fd-recipe-step-tag">{step.label}</span><h3>{step.title}</h3><p>{step.text}</p>
+              <div className="fd-recipe-mobile-details"><div>{step.details.map(detail => <span key={detail}><Check />{detail}</span>)}</div><p>{step.conclusion}</p></div>
+            </div>
+          </article>)}</div>
         </div>
       </div>
     </section>

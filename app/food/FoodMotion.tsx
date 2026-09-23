@@ -74,7 +74,7 @@ export default function FoodMotion({ rootRef }: { rootRef: RefObject<HTMLDivElem
           });
           if (desktop) {
             gsap.to(".fd-prep-ticket", { yPercent: -9, ease: "none", scrollTrigger: { trigger: ".fd-hero", start: "top top", end: "bottom top", scrub: .8 } });
-            gsap.fromTo(".fd-recipe-photograph > img", { scale: 1.035, yPercent: -1 }, { scale: 1, yPercent: 1, ease: "none", scrollTrigger: { trigger: ".fd-recipe-layout", start: "top 80%", end: "bottom 35%", scrub: 1 } });
+            gsap.fromTo(".fd-recipe-images", { scale: 1.035, yPercent: -1 }, { scale: 1.035, yPercent: 1, ease: "none", scrollTrigger: { trigger: ".fd-recipe-layout", start: "top 80%", end: "bottom 35%", scrub: 1 } });
           }
           gsap.fromTo(".fd-operation-line", { scaleX: 0 }, { scaleX: 1, ease: "none", scrollTrigger: { trigger: ".fd-operation-flow", start: "top 85%", end: "bottom 45%", scrub: .5 } });
           gsap.utils.toArray<HTMLElement>(".fd-operation-step").forEach((step, i) => {

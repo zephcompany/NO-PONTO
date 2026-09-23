@@ -53,8 +53,11 @@
 .fd-recipe-journey .fd-section-heading { margin-bottom: 60px; }
 .fd-recipe-layout { display: grid; grid-template-columns: 1.15fr 1fr; gap: 90px; align-items: start; }
 .fd-recipe-sticky { position: sticky; top: 128px; padding-bottom: 25px; }
-.fd-recipe-photograph { position: relative; border-radius: 9px; overflow: hidden; }
-.fd-recipe-photograph > img { display: block; width: 100%; height: min(540px,calc(100svh - 170px)); min-height: 430px; object-fit: cover; object-position: 62% 50%; }
+.fd-recipe-photograph { position: relative; border-radius: 9px; overflow: hidden; height: min(540px,calc(100svh - 170px)); min-height: 430px; background: #e2edf2; }
+.fd-recipe-images { position: absolute; inset: 0; }
+.fd-recipe-image { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; object-position: 62% 50%; opacity: 0; transform: scale(1.035); transition: opacity .7s ease,transform 1s cubic-bezier(.22,1,.36,1); }
+.fd-recipe-image.is-active { opacity: 1; transform: scale(1); }
+.fd-recipe-mobile-visual,.fd-recipe-mobile-details { display: none; }
 .fd-recipe-photo-label { position: absolute; top: 20px; left: 20px; display: flex; align-items: center; gap: 8px; color: #0c476e; background: #fffffff0; border: 1px solid #ffffff; border-radius: 4px; font-size: 8px; letter-spacing: .1em; padding: 9px 11px; }
 .fd-recipe-photo-label svg { width: 14px; height: 14px; }
 .fd-recipe-overlay { position: absolute; left: 22px; bottom: 48px; width: 260px; padding: 20px 22px; background: linear-gradient(145deg,#fff,#edf5fa); border: 1px solid white; border-radius: 7px; box-shadow: 0 15px 40px #0b375524; animation: fd-panel-in .45s ease both; }
@@ -166,7 +169,7 @@
   .fd-recipe-layout { gap: 35px; grid-template-columns: 1fr 1fr; }
   .fd-recipe-step { gap: 12px; grid-template-columns: 20px 1fr; }
   .fd-recipe-step h3 { font-size: 28px; }
-  .fd-recipe-photograph > img { height: 480px; min-height: 0; }
+  .fd-recipe-photograph { height: 480px; min-height: 0; }
   .fd-recipe-overlay { left: 15px; bottom: 43px; width: calc(100% - 30px); padding: 18px; }
   .fd-management-layout { grid-template-columns: 1fr; gap: 45px; }
   .fd-management-copy { max-width: 620px; }
@@ -225,8 +228,14 @@
   .fd-product .fd-kitchen-visual > div > b { font-size: 7px; }
   .fd-recipe-journey .fd-section-heading { margin-bottom: 30px; }
   .fd-recipe-layout { grid-template-columns: 1fr; gap: 21px; }
-  .fd-recipe-sticky { position: relative; top: auto; }
-  .fd-recipe-photograph > img { height: 425px; object-position: 67% 50%; }
+  .fd-recipe-sticky { display: none; }
+  .fd-recipe-mobile-visual { display: block; grid-column: 1 / -1; overflow: hidden; border-radius: 7px; margin-bottom: 10px; }
+  .fd-recipe-mobile-visual img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; object-position: 62% 50%; }
+  .fd-recipe-mobile-details { display: block; margin-top: 22px; }
+  .fd-recipe-mobile-details > div { display: flex; flex-wrap: wrap; gap: 8px 14px; }
+  .fd-recipe-mobile-details span { display: flex; align-items: center; gap: 5px; font-size: 12px; color: #558098; }
+  .fd-recipe-mobile-details svg { width: 12px; height: 12px; color: #009bd4; }
+  .fd-recipe-mobile-details > p { margin-top: 13px; font-size: 13px; color: #558098; }
   .fd-recipe-photo-label { left: 15px; top: 15px; font-size: 7px; padding: 8px 10px; }
   .fd-recipe-overlay { width: 230px; padding: 17px 18px; left: 15px; bottom: 42px; }
   .fd-recipe-overlay h3 { font-size: 26px; margin: 12px 0; }

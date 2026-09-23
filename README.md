@@ -2,6 +2,19 @@
 
 Landing page em português, com a identidade oficial e todas as dobras 00–13. React, TypeScript, Vinext/Vite, GSAP + ScrollTrigger e Lenis. Fonte Instrument Sans hospedada no próprio projeto.
 
+## GitHub Pages
+
+Página publicada: https://zephcompany.github.io/NO-PONTO/
+
+O workflow `.github/workflows/pages.yml` gera uma exportação estática e publica automaticamente os commits da branch `main`. Para gerar o mesmo build localmente:
+
+```sh
+npm ci
+npm run build:pages
+```
+
+Os arquivos prontos ficam em `out/`, com os assets e fontes configurados para `/NO-PONTO/`. O build original para Sites continua disponível em `npm run build`.
+
 ## Executar
 
 Requer Node.js 22.13 ou posterior.
